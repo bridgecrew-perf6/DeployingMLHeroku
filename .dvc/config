@@ -3,4 +3,4 @@
 ['remote "localremote"']
     url = ../../local
 ['remote "s3remote"']
-    url = s3://mybucket/ml-devops-p3
+    url = s3://ml-devops-p3/data
