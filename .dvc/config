@@ -1,0 +1,6 @@
+[core]
+    remote = s3remote
+['remote "localremote"']
+    url = ../../local
+['remote "s3remote"']
+    url = s3://mybucket/ml-devops-p3
