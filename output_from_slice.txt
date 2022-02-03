@@ -1,0 +1,6 @@
+Inference Performance 
+	column: education:Bachelors
+	Precision: 0.8779151447035685
+	Recall: 0.796964672873358
+	F-beta score: 0.8354836553245539
+
