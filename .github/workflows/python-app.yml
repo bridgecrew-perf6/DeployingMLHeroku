@@ -7,10 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-env:
-  AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,6 +22,7 @@ jobs:
     steps:
     
       - uses: actions/checkout@v2
+
       - name: Set up Python ${{matrix.python-version}}
         uses: actions/setup-python@v2 
         with:
@@ -37,14 +34,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest flake8
           if [-f requirements.txt]; then pip install -r requirements.txt; fi
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: DVC setup
         uses: iterative/setup-dvc@v1
+
       - name: Pull data from DVC
         run: dvc pull -R
+      
       - name: Lint with flake8
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      
       - name: Test with pytest
         run: |
-          pytest 
+          pytest test
