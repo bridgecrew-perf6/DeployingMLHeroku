@@ -3,10 +3,14 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from ml.data import process_data
-from ml.model import compute_model_metrics, inference, train_model
+try:
+    from .ml.data import process_data
+    from .ml.model import compute_model_metrics, inference, train_model
+except:
+    from ml.data import process_data
+    from ml.model import compute_model_metrics, inference, train_model
 import joblib
-
+1
 
 # Add the necessary imports for the starter code.
 
@@ -27,7 +31,7 @@ def load_data(data_path):
     return traindata, testdata
 
 
-def training(traindata, modelpath):
+def training(traindata, modelpath, test=False):
     cat_features = [
         "workclass", 
         "education",
@@ -45,7 +49,10 @@ def training(traindata, modelpath):
     # Train and save a model.
     model = train_model(X_train, y_train)
     
-    joblib.dump((model,encoder,lb), modelpath)
+    if test == False:
+        joblib.dump((model,encoder,lb), modelpath)
+    else:
+        return model
     
     pass
 
@@ -85,6 +92,6 @@ def main(datapath, modelpath):
     
     
 if __name__ == '__main__':
-    datapath = '../data/census.csv'
-    modelpath = '../model/randomforest.pkl'
+    datapath = 'data/census.csv'
+    modelpath = 'model/randomforest.pkl'
     main(datapath, modelpath)    
