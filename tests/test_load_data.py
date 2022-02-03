@@ -1,8 +1,7 @@
 import pandas as pd
 import pytest
 
-@pytest.fixture(scope='session')
-def data():
+def test_load():
     
     data_path = 'data/census.csv'
     
