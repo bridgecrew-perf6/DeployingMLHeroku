@@ -29,7 +29,7 @@ def load_data(data_path):
 
 def train(traindata, modelpath, label_column='income'):
     cat_features = [
-        "workclass",
+        "workclass", 
         "education",
         "marital-status",
         "occupation",
