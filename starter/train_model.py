@@ -27,7 +27,7 @@ def load_data(data_path):
     return traindata, testdata
 
 
-def train(traindata, modelpath, label_column='income'):
+def training(traindata, modelpath, label_column='income'):
     cat_features = [
         "workclass", 
         "education",
@@ -40,7 +40,7 @@ def train(traindata, modelpath, label_column='income'):
     ]
     # Proces the test data with the process_data function.
     X_train, y_train, encoder, lb = process_data(
-        train, categorical_features=cat_features, label="salary", training=True
+        traindata, categorical_features=cat_features, label="salary", training=True
     )
     # Train and save a model.
     model = train_model(X_train, y_train)
