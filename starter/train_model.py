@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from .ml.data import process_data
-from .ml.model import compute_model_metrics, inference, train_model
+from ml.data import process_data
+from ml.model import compute_model_metrics, inference, train_model
 import joblib
 
 
@@ -27,7 +27,7 @@ def load_data(data_path):
     return traindata, testdata
 
 
-def training(traindata, modelpath, label_column='income'):
+def training(traindata, modelpath):
     cat_features = [
         "workclass", 
         "education",
@@ -48,3 +48,43 @@ def training(traindata, modelpath, label_column='income'):
     joblib.dump((model,encoder,lb), modelpath)
     
     pass
+
+def model_inference(modelpath, testdata):
+    cat_features = [
+        "workclass", 
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
+    
+    model, encoder, lb = joblib.load(modelpath)
+    
+    X_test, y_test, encoder, lb = process_data(
+        testdata, categorical_features=cat_features, label="salary", training=False, encoder = encoder, lb = lb
+    )
+    
+    y_pred = inference(model,X_test)
+    
+    precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
+    
+    return precision, recall, fbeta
+
+
+def main(datapath, modelpath):
+    traindata, testdata = load_data(datapath)
+    
+    training(traindata,modelpath)
+    
+    precision, recall, f_beta = model_inference(modelpath, testdata)
+    
+    print(f'precision = {precision}, recall = {recall}, f_beta = {f_beta}')
+    
+    
+if __name__ == '__main__':
+    datapath = '../data/census.csv'
+    modelpath = '../model/randomforest.pkl'
+    main(datapath, modelpath)    
