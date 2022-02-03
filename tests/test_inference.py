@@ -1,7 +1,7 @@
 from json import load
 import numpy as np
 import pandas as pd
-from .starter import train_model
+from starter import train_model
 
 def test_inference():
     datapath = 'data/census.csv'
