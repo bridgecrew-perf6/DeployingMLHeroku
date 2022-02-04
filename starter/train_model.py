@@ -76,9 +76,13 @@ def model_inference(modelpath, testdata):
     
     y_pred = inference(model,X_test)
     
-    precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
+    if y_test is not None:
+        precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
+        return precision, recall, fbeta
     
-    return precision, recall, fbeta
+    return lb.inverse_transform(y_pred)[0]
+    
+    
 
 
 def main(datapath, modelpath):
