@@ -8,20 +8,26 @@ from starter.train_model import model_inference
 
 app = FastAPI()
 
+if "DYNO" in os.environ and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    if os.system("dvc pull") != 0:
+        exit("dvc pull failed")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
+
 class RowData(BaseModel):
     age: int = Field(..., example=32)
     workclass: str = Field(..., example="Private")
-    fnlwgt: int = Field(..., example=205019)
-    education: str = Field(..., example="Assoc-acdm")
+    fnlwgt: int = Field(..., example=314234)
+    education: str = Field(..., example="Bachelors")
     education_num: int = Field(..., example=12)
     marital_status: str = Field(..., example="Never-married")
     occupation: str = Field(..., example="Sales")
     relationship: str = Field(..., example="Not-in-family")
-    race: str = Field(..., example="Black")
-    sex: str = Field(..., example="Male")
-    capital_gain: int = Field(..., example=0)
+    race: str = Field(..., example="White")
+    sex: str = Field(..., example="Female")
+    capital_gain: int = Field(..., example=1000)
     capital_loss: int = Field(..., example=0)
-    hours_per_week: int = Field(..., example=50)
+    hours_per_week: int = Field(..., example=40)
     native_country: str = Field(..., example="United-States")
 
 @app.get("/")
