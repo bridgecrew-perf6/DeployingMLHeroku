@@ -14,7 +14,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
 
-class RowData(BaseModel):
+class Data(BaseModel):
     age: int = Field(..., example=32)
     workclass: str = Field(..., example="Private")
     fnlwgt: int = Field(..., example=314234)
@@ -35,7 +35,7 @@ async def say_hello():
     return{"Hello": "Welcome!"}
 
 @app.post('/inference')
-async def predict(input: RowData):
+async def predict(input: Data):
     data = jsonable_encoder(input)
     cols = {"age":"age",
             "workclass":"workclass",
