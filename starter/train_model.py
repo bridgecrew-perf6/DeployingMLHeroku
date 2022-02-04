@@ -51,6 +51,7 @@ def training(traindata, modelpath, test=False):
     
     if test == False:
         joblib.dump((model,encoder,lb), modelpath)
+        joblib.dump(encoder,'model/encoder.pkl')
     else:
         return model
     
